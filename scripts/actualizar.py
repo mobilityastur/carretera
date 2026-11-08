@@ -346,16 +346,28 @@ def leer_camaras(xml_bytes):
     return salida
 
 
-def elegir(lista, maximo=8):
-    """Reparte 'maximo' elementos a lo largo de la lista (ya ordenada por el tramo)."""
+def elegir(lista, maximo=8, clave=None):
+    """Reparte 'maximo' elementos a lo largo del tramo. Con 'clave' (posición a lo largo
+    del tramo) los reparte por distancia, para que no se amontonen donde hay muchas."""
     if maximo <= 0:
         return []
     if len(lista) <= maximo:
         return list(lista)
     if maximo == 1:
         return [lista[len(lista) // 2]]
-    paso = (len(lista) - 1) / (maximo - 1)
-    return [lista[round(i * paso)] for i in range(maximo)]
+    if clave is None:
+        paso = (len(lista) - 1) / (maximo - 1)
+        return [lista[round(i * paso)] for i in range(maximo)]
+    pos = [clave(x) for x in lista]
+    lo, hi = min(pos), max(pos)
+    libres = list(range(len(lista)))
+    elegidos = []
+    for i in range(maximo):
+        objetivo = lo + (hi - lo) * i / (maximo - 1)
+        j = min(libres, key=lambda k: abs(pos[k] - objetivo))
+        libres.remove(j)
+        elegidos.append(lista[j])
+    return elegidos
 
 
 def orden_tramo(zona):
@@ -537,12 +549,12 @@ def resumen_zona(zona, incs, cams, avisos):
             dentro = [c for c in todas if en_bbox(c["lat"], c["lon"], foco["bbox"])]
             fuera = [c for c in todas if c not in dentro]
             n_foco = min(foco.get("camaras", maximo // 2), len(dentro))
-            sel = elegir(dentro, n_foco) + elegir(fuera, maximo - n_foco)
+            sel = elegir(dentro, n_foco, clave) + elegir(fuera, maximo - n_foco, clave)
             if len(sel) < maximo:  # si un lado tiene pocas, se completa con el otro
                 resto = [c for c in todas if c not in sel]
-                sel += elegir(resto, maximo - len(sel))
+                sel += elegir(resto, maximo - len(sel), clave)
         else:
-            sel = elegir(todas, maximo)
+            sel = elegir(todas, maximo, clave)
         sel.sort(key=clave)
     camaras = [{"id": c["id"], "via": c["via"], "km": c["km"], "destino": c["destino"], "url": c["url"],
                 "lat": c["lat"], "lon": c["lon"]}
