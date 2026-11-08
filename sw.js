@@ -1,7 +1,7 @@
 // Service worker: permite instalar la app y ver la última consulta sin cobertura.
 // Siempre intenta la red primero (para no quedarse con versiones viejas) y,
 // si no hay conexión, sirve lo último guardado.
-const CACHE = "carretera-v1";
+const CACHE = "carretera-v2";
 const BASE = ["./", "index.html", "app.css", "app.js", "manifest.webmanifest", "icono.svg", "icono-192.png"];
 const DATOS = "https://raw.githubusercontent.com/mobilityastur/carretera/datos/estado.json";
 
@@ -24,7 +24,8 @@ self.addEventListener("fetch", (e) => {
   if (!propio && !esDatos) return; // cámaras, mapa y fuentes: directo a la red
   const clave = esDatos ? DATOS : req;
   e.respondWith(
-    fetch(req)
+    // "no-cache": pregunta siempre al servidor si hay versión nueva (GitHub Pages deja 10 min de caché)
+    fetch(req, { cache: "no-cache" })
       .then((res) => {
         if (res.ok) {
           const copia = res.clone();
