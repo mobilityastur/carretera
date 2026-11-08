@@ -235,8 +235,9 @@ function vistaMapa() {
     }).addTo(mapa);
   });
   const caja = L.latLngBounds(estado.zonas.flatMap((z) => [[z.bbox[0], z.bbox[1]], [z.bbox[2], z.bbox[3]]]));
-  mapa.fitBounds(caja, { padding: [8, 8] });
-  if (mapa.getZoom() < 8) mapa.setView([43.12, -5.8], 8); // móvil en vertical: Asturias de lado a lado
+  // en móvil vertical, encajar todo dejaría el mapa muy lejos: mínimo zoom 8 centrado en Asturias
+  const zoom = Math.max(8, mapa.getBoundsZoom(caja, false, L.point(16, 16)));
+  mapa.setView(zoom > 8 ? caja.getCenter() : [43.12, -5.8], zoom, { animate: false });
   const color = (n) => ["#3FBF7F", "#F2B33D", "#F0605A"][n] || "#3FBF7F";
   for (const z of estado.zonas) {
     const [la, lo] = z.centro;
