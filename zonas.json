@@ -1,5 +1,5 @@
 {
-  "_ayuda": "Cada zona: carreteras que la forman, recuadro geográfico [latMin, lonMin, latMax, lonMax] y puntos de referencia para cruzar con los avisos de AEMET. Las cámaras se eligen solas (carretera de la zona dentro del recuadro); 'camaras' fija una lista de ids si se quiere. 'aemet' (opcional) son códigos de zona de aviso de AEMET que siempre afectan a la zona (633305 Cordillera y Picos de Europa, 672401 Cordillera Cantábrica de León).",
+  "_ayuda": "Cada zona: carreteras que la forman, recuadro geográfico [latMin, lonMin, latMax, lonMax] y puntos para cruzar con los avisos de AEMET. 'aemet': códigos de zona de aviso que siempre afectan a la zona. Cámaras: se eligen solas (carretera de la zona dentro del recuadro), 8 por defecto o 'maxCamaras'; 'foco' reserva parte de ellas para un subtramo crítico; 'orden' ordena la lista (lat- de norte a sur, lon- de este a oeste, lon+ de oeste a este); 'camaras' fija ids a mano.",
   "zonas": [
     {
       "id": "pajares",
@@ -9,12 +9,12 @@
       "carreteras": [
         "N-630"
       ],
-      "tramo": "Campomanes ↔ Villamanín",
+      "tramo": "Campomanes ↔ La Robla",
       "bbox": [
-        42.9,
+        42.78,
         -5.86,
         43.12,
-        -5.62
+        -5.55
       ],
       "puntos": [
         [
@@ -24,6 +24,10 @@
         [
           43.06,
           -5.8
+        ],
+        [
+          42.85,
+          -5.62
         ]
       ],
       "aemet": [
@@ -34,17 +38,18 @@
     {
       "id": "huerna",
       "nombre": "Huerna",
-      "titulo": "Autopista del Huerna",
+      "titulo": "Huerna (AP-66 y A-66)",
       "tipo": "puerto",
       "carreteras": [
-        "AP-66"
+        "AP-66",
+        "A-66"
       ],
-      "tramo": "Campomanes ↔ La Magdalena",
+      "tramo": "Campomanes ↔ La Magdalena ↔ León",
       "bbox": [
-        42.74,
+        42.58,
         -5.96,
         43.12,
-        -5.7
+        -5.5
       ],
       "puntos": [
         [
@@ -54,12 +59,31 @@
         [
           43.06,
           -5.82
+        ],
+        [
+          42.82,
+          -5.78
+        ],
+        [
+          42.66,
+          -5.6
         ]
       ],
       "aemet": [
         "633305",
         "672401"
-      ]
+      ],
+      "maxCamaras": 12,
+      "foco": {
+        "nombre": "lado leonés",
+        "bbox": [
+          42.58,
+          -5.92,
+          42.98,
+          -5.5
+        ],
+        "camaras": 6
+      }
     },
     {
       "id": "san-isidro",
@@ -72,15 +96,19 @@
       ],
       "tramo": "Felechosa ↔ Puebla de Lillo",
       "bbox": [
-        42.95,
+        42.93,
         -5.52,
         43.12,
-        -5.25
+        -5.2
       ],
       "puntos": [
         [
           43.05,
           -5.37
+        ],
+        [
+          42.98,
+          -5.27
         ]
       ],
       "aemet": [
@@ -99,15 +127,19 @@
       ],
       "tramo": "Caleao ↔ Riaño",
       "bbox": [
-        43.02,
+        42.94,
         -5.4,
         43.2,
-        -5.1
+        -4.98
       ],
       "puntos": [
         [
           43.11,
           -5.22
+        ],
+        [
+          42.99,
+          -5.05
         ]
       ],
       "aemet": [
@@ -122,12 +154,13 @@
       "tipo": "puerto",
       "carreteras": [
         "AS-227",
+        "LE-497",
         "LE-481"
       ],
       "tramo": "Pola de Somiedo ↔ Villablino",
       "bbox": [
-        42.93,
-        -6.35,
+        42.88,
+        -6.38,
         43.12,
         -6.1
       ],
@@ -135,6 +168,10 @@
         [
           43.0,
           -6.24
+        ],
+        [
+          42.94,
+          -6.3
         ]
       ],
       "aemet": [
@@ -154,15 +191,19 @@
       ],
       "tramo": "Cangas del Narcea ↔ Villablino",
       "bbox": [
-        42.93,
+        42.88,
         -6.6,
         43.12,
-        -6.3
+        -6.28
       ],
       "puntos": [
         [
           42.99,
           -6.41
+        ],
+        [
+          42.94,
+          -6.33
         ]
       ],
       "aemet": [
@@ -181,14 +222,18 @@
       ],
       "tramo": "Teverga ↔ San Emiliano",
       "bbox": [
-        42.95,
-        -6.1,
+        42.9,
+        -6.12,
         43.12,
-        -5.9
+        -5.88
       ],
       "puntos": [
         [
           43.04,
+          -6.0
+        ],
+        [
+          42.97,
           -6.0
         ]
       ],
@@ -207,7 +252,7 @@
       ],
       "tramo": "Cangas de Onís ↔ Riaño",
       "bbox": [
-        42.98,
+        42.94,
         -5.2,
         43.36,
         -4.95
@@ -216,6 +261,10 @@
         [
           43.09,
           -5.0
+        ],
+        [
+          42.98,
+          -5.02
         ]
       ],
       "aemet": [
@@ -231,12 +280,12 @@
       "carreteras": [
         "A-8"
       ],
-      "tramo": "Gijón/Villaviciosa ↔ Unquera",
+      "tramo": "Gijón/Villaviciosa ↔ Torrelavega",
       "bbox": [
         43.3,
         -5.7,
         43.6,
-        -4.45
+        -4.0
       ],
       "puntos": [
         [
@@ -246,8 +295,13 @@
         [
           43.43,
           -4.8
+        ],
+        [
+          43.38,
+          -4.3
         ]
-      ]
+      ],
+      "orden": "lon+"
     },
     {
       "id": "a8-occidente",
@@ -257,10 +311,10 @@
       "carreteras": [
         "A-8"
       ],
-      "tramo": "Avilés ↔ Ribadeo",
+      "tramo": "Avilés ↔ Ribadeo ↔ Mondoñedo ↔ Vilalba",
       "bbox": [
-        43.4,
-        -7.15,
+        43.25,
+        -7.75,
         43.62,
         -5.7
       ],
@@ -272,8 +326,28 @@
         [
           43.53,
           -6.8
+        ],
+        [
+          43.43,
+          -7.36
+        ],
+        [
+          43.32,
+          -7.62
         ]
-      ]
+      ],
+      "orden": "lon-",
+      "maxCamaras": 12,
+      "foco": {
+        "nombre": "Mondoñedo",
+        "bbox": [
+          43.33,
+          -7.55,
+          43.52,
+          -7.2
+        ],
+        "camaras": 6
+      }
     },
     {
       "id": "a66",

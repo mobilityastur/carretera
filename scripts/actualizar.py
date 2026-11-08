@@ -23,9 +23,9 @@ RAIZ = Path(__file__).resolve().parent.parent
 URL_INCIDENCIAS = "https://nap.dgt.es/datex2/v3/dgt/SituationPublication/datex2_v37.xml"
 URL_CAMARAS = "https://nap.dgt.es/datex2/v3/dgt/DevicePublication/camaras_datex2_v36.xml"
 URL_AEMET = "https://opendata.aemet.es/opendata/api/avisos_cap/ultimoelaborado/area/{area}"
-AREAS_AEMET = ["63", "67"]  # Asturias y Castilla y León (vertiente leonesa de los puertos)
-# Recuadro amplio: Asturias y la franja norte de León
-BBOX_REGION = (42.60, -7.30, 43.75, -4.40)
+AREAS_AEMET = ["63", "67", "66", "71"]  # Asturias, Castilla y León, Cantabria y Galicia
+# Recuadro amplio: Asturias y los tramos que entran en León, Cantabria y Galicia
+BBOX_REGION = (42.45, -7.80, 43.80, -3.90)
 UA = "mobilityastur-carretera/1.0 (+https://github.com/mobilityastur/carretera)"
 XSI_TYPE = "{http://www.w3.org/2001/XMLSchema-instance}type"
 AHORA = datetime.now(timezone.utc)
@@ -304,9 +304,12 @@ def clasificar(inc):
         nivel = 2 if gestion in ROJOS else 1
 
     partes = []
+    sitio = lugar(inc)
     if inc["kmIni"] is not None:
         a, b = inc["kmIni"], inc["kmFin"]
         partes.append(f"km {a:g}" if a == b else f"km {a:g} a {b:g}")
+    if sitio:
+        partes.append(sitio)
     if inc["sentidoVia"] == "both":
         partes.append("ambos sentidos")
     elif inc["destino"]:
@@ -343,11 +346,41 @@ def leer_camaras(xml_bytes):
     return salida
 
 
-def elegir(lista, maximo=6):
+def elegir(lista, maximo=8):
+    """Reparte 'maximo' elementos a lo largo de la lista (ya ordenada por el tramo)."""
+    if maximo <= 0:
+        return []
     if len(lista) <= maximo:
-        return lista
+        return list(lista)
+    if maximo == 1:
+        return [lista[len(lista) // 2]]
     paso = (len(lista) - 1) / (maximo - 1)
     return [lista[round(i * paso)] for i in range(maximo)]
+
+
+def orden_tramo(zona):
+    modo = zona.get("orden", "lat-")
+    if modo == "lon-":
+        return lambda c: -(c["lon"] or 0)
+    if modo == "lon+":
+        return lambda c: c["lon"] or 0
+    return lambda c: -(c["lat"] or 0)
+
+
+PROVINCIA_LOCAL = {"ASTURIAS", "PRINCIPADO DE ASTURIAS"}
+
+
+def lugar(inc):
+    p = next((p for p in inc["puntos"] if p.get("municipio")), None) or next(
+        (p for p in inc["puntos"] if p.get("provincia")), None)
+    if not p:
+        return None
+    mun = (p.get("municipio") or "").strip()
+    prov = (p.get("provincia") or "").strip()
+    fuera = prov and prov.upper() not in PROVINCIA_LOCAL
+    if mun and fuera and mun.upper() != prov.upper():
+        return f"{mun} ({prov})"
+    return mun or prov
 
 
 # ---------- avisos AEMET ----------
@@ -495,9 +528,22 @@ def resumen_zona(zona, incs, cams, avisos):
         ids = [str(i) for i in zona["camaras"]]
         sel = [c for c in cams if c["id"] in ids]
     else:
-        sel = sorted([c for c in cams if norm_via(c["via"]) in vias and en_bbox(c["lat"], c["lon"], zona["bbox"])],
-                     key=lambda c: (c["via"] or "", c["km"] or 0))
-        sel = elegir(sel)
+        clave = orden_tramo(zona)
+        todas = sorted([c for c in cams if norm_via(c["via"]) in vias and en_bbox(c["lat"], c["lon"], zona["bbox"])],
+                       key=clave)
+        maximo = zona.get("maxCamaras", 8)
+        foco = zona.get("foco")
+        if foco:
+            dentro = [c for c in todas if en_bbox(c["lat"], c["lon"], foco["bbox"])]
+            fuera = [c for c in todas if c not in dentro]
+            n_foco = min(foco.get("camaras", maximo // 2), len(dentro))
+            sel = elegir(dentro, n_foco) + elegir(fuera, maximo - n_foco)
+            if len(sel) < maximo:  # si un lado tiene pocas, se completa con el otro
+                resto = [c for c in todas if c not in sel]
+                sel += elegir(resto, maximo - len(sel))
+        else:
+            sel = elegir(todas, maximo)
+        sel.sort(key=clave)
     camaras = [{"id": c["id"], "via": c["via"], "km": c["km"], "destino": c["destino"], "url": c["url"],
                 "lat": c["lat"], "lon": c["lon"]}
                for c in sel if c["url"]]
