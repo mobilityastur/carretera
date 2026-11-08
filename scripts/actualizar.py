@@ -123,7 +123,11 @@ TEXTOS = {
     "snowDrifts": "Nieve acumulada", "packedSnow": "Nieve compactada", "slipperyRoad": "Calzada deslizante",
     "abnormalTraffic": "Tráfico", "stationaryTraffic": "Tráfico detenido", "queuingTraffic": "Retención",
     "slowTraffic": "Circulación lenta", "heavyTraffic": "Circulación densa",
-    "congestion": "Retención",
+    "congestion": "Retención", "roadSurfaceInPoorCondition": "Calzada en mal estado",
+    "spillageOnTheRoad": "Vertido en la calzada", "vehicleStuck": "Vehículo atascado",
+    "vehicleOnFire": "Vehículo ardiendo", "oilOnRoad": "Aceite en la calzada", "mudOnRoad": "Barro en la calzada",
+    "looseChippings": "Gravilla suelta", "snowploughsInUse": "Quitanieves trabajando",
+    "saltingInProgress": "Esparcido de sal", "gritting": "Esparcido de fundentes",
     # gestión de carriles
     "roadClosed": "Carretera cortada", "carriagewayClosures": "Calzada cortada",
     "laneClosures": "Carril cortado", "narrowLanes": "Carriles estrechados",
@@ -286,7 +290,10 @@ def clasificar(inc):
     elif gestion:
         causa = next((x for x in tipos if x in ("roadworks", "accident", "rockfalls", "landslips", "flooding",
                                                   "damagedRoadSurface", "fallenTrees")), None)
-        titulo = (t(causa) + " · " if causa else "") + t(gestion).lower() if causa else t(gestion)
+        texto_gestion = t(gestion)
+        if gestion == "laneClosures" and carril_menor:
+            texto_gestion = "Arcén cortado"
+        titulo = f"{t(causa)} · {texto_gestion.lower()}" if causa else texto_gestion
         if gestion in ("roadClosed", "carriagewayClosures"):
             titulo += " (vehículos pesados)"
         nivel = 0 if (gestion in MENORES or carril_menor or pesados) else 1
@@ -457,11 +464,13 @@ def resumen_zona(zona, incs, cams, avisos):
                 "lat": p0.get("lat"), "lon": p0.get("lon"),
                 "via": inc["via"], "inicio": inc["inicio"], "fin": inc["fin"],
                 "comentario": " ".join(inc["comentarios"])[:280] or None}
-        if ini and ini > AHORA:
-            if ini <= limite:
-                programadas.append(item)
-        else:
-            activas.append(item)
+        destino = programadas if ini and ini > AHORA else activas
+        if destino is programadas and ini > limite:
+            continue
+        # la DGT suele dar una entrada por sentido: se juntan las que dicen lo mismo
+        igual = next((x for x in destino if x["titulo"] == titulo and x["detalle"] == detalle), None)
+        if igual is None:
+            destino.append(item)
     activas.sort(key=lambda x: (-x["nivel"], x["inicio"] or ""), reverse=False)
     programadas.sort(key=lambda x: x["inicio"] or "")
 

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carretera · Asturias</title>
+<meta name="description" content="Estado de los puertos y autovías de Asturias: incidencias y cámaras de la DGT y avisos de AEMET.">
+<meta name="theme-color" content="#14171B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Carretera">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icono.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icono-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="app">
+  <main id="vista" aria-live="polite">
+    <p class="cargando">Cargando el estado de las carreteras…</p>
+  </main>
+  <nav class="pestanas" aria-label="Secciones">
+    <a href="#/" data-tab="zonas">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19 10 5M20 19 14 5M12 7v2M12 12v2M12 17v2"/></svg>Zonas</a>
+    <a href="#/mapa" data-tab="mapa">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 6 6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></svg>Mapa</a>
+    <a href="#/camaras" data-tab="camaras">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="13" height="10" rx="2"/><path d="m16 11 5-3v8l-5-3"/></svg>Cámaras</a>
+    <a href="#/avisos" data-tab="avisos">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21h4"/></svg>Avisos</a>
+  </nav>
+</div>
+
+<dialog id="visor" aria-label="Cámara ampliada">
+  <form method="dialog"><button class="cerrar" aria-label="Cerrar">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></form>
+  <img alt="">
+  <p class="pie"></p>
+</dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+<script src="app.js" defer></script>
+</body>
+</html>
