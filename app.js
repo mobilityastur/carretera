@@ -220,10 +220,20 @@ function vistaMapa() {
   if (!window.L) { document.getElementById("mapa").innerHTML = '<p class="vacio">No se ha podido cargar el mapa.</p>'; return; }
   if (mapa) { mapa.remove(); mapa = null; }
   mapa = L.map("mapa", { zoomControl: true, attributionControl: true }).setView([43.25, -5.85], 8);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-    maxZoom: 15, subdomains: "abcd",
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a>',
+  // Fondo oscuro de Esri (sin clave) con nombres encima; si falla, OpenStreetMap
+  const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/";
+  const fondo = L.tileLayer(`${ESRI}World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}`, {
+    maxZoom: 16, attribution: 'Mapa © <a href="https://www.esri.com/">Esri</a>, HERE, Garmin, © OpenStreetMap',
   }).addTo(mapa);
+  const nombres = L.tileLayer(`${ESRI}World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}`, { maxZoom: 16 }).addTo(mapa);
+  let fallos = 0;
+  fondo.on("tileerror", () => {
+    if (++fallos !== 4) return;
+    mapa.removeLayer(fondo); mapa.removeLayer(nombres);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 16, attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(mapa);
+  });
   const color = (n) => ["#3FBF7F", "#F2B33D", "#F0605A"][n] || "#3FBF7F";
   for (const z of estado.zonas) {
     const [la, lo] = z.centro;
