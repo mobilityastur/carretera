@@ -2,7 +2,7 @@ name: Actualizar datos
 
 on:
   schedule:
-    - cron: "3-59/10 * * * *"
+    - cron: "4-59/10 * * * *"
   workflow_dispatch:
   push:
     branches: [main]
