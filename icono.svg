@@ -1,7 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#14171B"/>
-  <path d="M60 400 L210 150 L262 230 L300 180 L452 400 Z" fill="#262B31"/>
-  <path d="M210 150 L180 200 L200 195 L215 215 L240 195 Z" fill="#ECEEF0"/>
-  <path d="M196 440 L246 250 L266 250 L316 440 Z" fill="#F2B33D"/>
-  <path d="M256 280 v28 M256 336 v32 M256 396 v36" stroke="#14171B" stroke-width="10" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3E9FE0"/>
+      <stop offset="1" stop-color="#9AD8F5"/>
+    </linearGradient>
+    <linearGradient id="monte" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2E3B4E"/>
+      <stop offset="1" stop-color="#1A222D"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#cielo)"/>
+  <circle cx="384" cy="128" r="36" fill="#FFD166"/>
+  <path d="M-10 420 L150 210 L215 280 L300 150 L522 430 L522 522 L-10 522Z" fill="url(#monte)"/>
+  <path d="M300 150 L262 205 L285 198 L300 222 L318 196 L338 202Z" fill="#FFFFFF"/>
+  <path d="M150 210 L128 240 L146 236 L158 252 L172 236Z" fill="#FFFFFF"/>
+  <path d="M120 522 C 120 470, 360 470, 360 430 C 360 392, 160 400, 160 362 C 160 326, 320 336, 320 300 C 320 272, 230 274, 236 250" fill="none" stroke="#F2B33D" stroke-width="30" stroke-linecap="round"/>
+  <path d="M120 522 C 120 470, 360 470, 360 430 C 360 392, 160 400, 160 362 C 160 326, 320 336, 320 300 C 320 272, 230 274, 236 250" fill="none" stroke="#1E2734" stroke-width="5" stroke-dasharray="16 18" stroke-linecap="round"/>
 </svg>

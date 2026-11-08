@@ -272,3 +272,53 @@ addEventListener("hashchange", () => { pintar(); scrollTo(0, 0); });
 document.addEventListener("visibilitychange", () => { if (!document.hidden) cargar(); });
 setInterval(() => { if (!document.hidden && !location.hash.startsWith("#/mapa")) cargar(); }, REFRESCO_MS);
 cargar();
+
+// ---------- instalación ----------
+if ("serviceWorker" in navigator) {
+  addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+
+(function avisoInstalar() {
+  const caja = document.getElementById("instalar");
+  const CLAVE = "carretera:instalar-cerrado";
+  const leer = () => { try { return localStorage.getItem(CLAVE); } catch (e) { return null; } };
+  const guardar = () => { try { localStorage.setItem(CLAVE, "1"); } catch (e) { /* modo privado */ } };
+  const instalada = matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  if (instalada || leer()) return;
+
+  const ua = navigator.userAgent;
+  const ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+  const interno = /FBAN|FBAV|Instagram|Line\/|; wv\)|WhatsApp/i.test(ua);
+  let peticion = null;
+
+  const mostrar = (modo) => {
+    caja.classList.remove("modo-android", "modo-ios", "modo-interno");
+    caja.classList.add(`modo-${modo}`);
+    caja.hidden = false;
+  };
+  const ocultar = (recordar) => { caja.hidden = true; if (recordar) guardar(); };
+
+  caja.querySelector(".cerrar-instalar").addEventListener("click", () => ocultar(true));
+  caja.querySelector(".si").addEventListener("click", async () => {
+    if (!peticion) return;
+    peticion.prompt();
+    const { outcome } = await peticion.userChoice;
+    peticion = null;
+    ocultar(outcome === "accepted");
+  });
+
+  // Android y escritorio con Chrome/Edge: botón de instalar de verdad
+  addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    peticion = e;
+    if (!leer()) mostrar("android");
+  });
+  addEventListener("appinstalled", () => ocultar(true));
+
+  // iPhone: instrucciones; navegadores internos de otras apps: abrir fuera
+  setTimeout(() => {
+    if (!caja.hidden || leer()) return;
+    if (interno) mostrar("interno");
+    else if (ios) mostrar("ios");
+  }, 1500);
+})();

@@ -139,6 +139,21 @@ dialog#visor form { position: absolute; top: 8px; right: 8px; margin: 0; }
 .fuentes { padding: 22px 20px 0; font-size: 12px; color: var(--tenue); }
 .fuentes a { color: var(--suave); }
 
+/* aviso de instalación */
+.instalar { position: fixed; left: 12px; right: 12px; bottom: calc(84px + env(safe-area-inset-bottom)); z-index: 1001; max-width: 536px; margin: 0 auto; padding: 12px 8px 12px 12px; border-radius: 18px; background: #232930; border: 1px solid #39414A; box-shadow: 0 12px 32px rgba(0, 0, 0, .45); display: flex; align-items: center; gap: 12px; animation: subir .35s ease-out; }
+.instalar[hidden] { display: none; }
+.instalar > img { width: 48px; height: 48px; border-radius: 11px; flex: none; }
+.instalar .txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.instalar strong { font-size: 16px; color: var(--blanco); }
+.instalar .txt span { font-size: 14px; color: #C9CED3; }
+.instalar .compartir { width: 18px; height: 18px; vertical-align: -3px; color: #6CB4FF; }
+.instalar b { color: var(--blanco); font-weight: 600; }
+.instalar .si { min-height: 44px; padding: 0 16px; border: 0; border-radius: 12px; background: var(--ambar); color: #1A1406; font-weight: 600; font-size: 15px; cursor: pointer; flex: none; }
+.cerrar-instalar { width: 44px; height: 44px; border: 0; border-radius: 22px; background: none; color: var(--suave); display: flex; align-items: center; justify-content: center; cursor: pointer; flex: none; }
+.instalar:not(.modo-android) .android, .instalar:not(.modo-ios) .ios, .instalar:not(.modo-interno) .interno { display: none; }
+@keyframes subir { from { transform: translateY(20px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .instalar { animation: none; } }
+
 /* pestañas */
 .pestanas { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 560px; margin: 0 auto; border-top: 1px solid var(--borde); background: rgba(24, 27, 31, .96); backdrop-filter: blur(12px); padding: 6px 4px calc(10px + env(safe-area-inset-bottom)); }
 .pestanas a { min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; text-decoration: none; color: var(--suave); font-size: 12px; }
