@@ -234,6 +234,8 @@ function vistaMapa() {
       maxZoom: 16, attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(mapa);
   });
+  const caja = L.latLngBounds(estado.zonas.flatMap((z) => [[z.bbox[0], z.bbox[1]], [z.bbox[2], z.bbox[3]]]));
+  mapa.fitBounds(caja, { padding: [8, 8] });
   const color = (n) => ["#3FBF7F", "#F2B33D", "#F0605A"][n] || "#3FBF7F";
   for (const z of estado.zonas) {
     const [la, lo] = z.centro;
