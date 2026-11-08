@@ -57,7 +57,11 @@ function cuando(inc) {
 const etiquetaNivel = (z) => z.estado;
 const tieneNieve = (z) => z.avisos.some((a) => /niev|nevad/i.test(a.fenomeno + a.titulo));
 const avisoTexto = (a) => {
-  const zonas = a.zonas && a.zonas.length ? ` Afecta a ${a.zonas.slice(0, 4).join(", ")}${a.zonas.length > 4 ? "…" : ""}.` : "";
+  const puertos = estado.zonas.filter((z) => z.tipo === "puerto").map((z) => z.nombre);
+  const todos = a.zonas && puertos.every((p) => a.zonas.includes(p));
+  const resto = todos ? a.zonas.filter((n) => !puertos.includes(n)) : a.zonas || [];
+  const lista = (todos ? ["todos los puertos"] : []).concat(resto);
+  const zonas = lista.length ? ` Afecta a ${lista.slice(0, 4).join(", ")}${lista.length > 4 ? "…" : ""}.` : "";
   const per = a.ahora ? `hasta ${fmtFecha(a.fin)}` : `${fmtFecha(a.inicio)} → ${fmtFecha(a.fin)}`;
   return `${a.zonaNombre}, ${per}.${zonas}`;
 };

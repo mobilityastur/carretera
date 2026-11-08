@@ -437,11 +437,22 @@ def leer_avisos(clave):
         except tarfile.ReadError:
             avisos.extend(leer_cap(datos))
     vistos, unicos = set(), []
-    for a in sorted(avisos, key=lambda a: (-a["nivelNum"], a["inicio"] or "")):
+    for a in sorted(avisos, key=lambda a: (a["zona"] or "", a["fenomeno"], a["nivelNum"], a["inicio"] or "")):
         k = (a["zona"], a["fenomeno"], a["inicio"], a["fin"])
-        if k not in vistos:
-            vistos.add(k)
-            unicos.append(a)
+        if k in vistos:
+            continue
+        vistos.add(k)
+        prev = unicos[-1] if unicos else None
+        # AEMET parte un mismo aviso en tramos seguidos: se unen en uno
+        if (prev and (prev["zona"], prev["fenomeno"], prev["nivel"]) == (a["zona"], a["fenomeno"], a["nivel"])
+                and prev["fin"] and a["inicio"]
+                and fecha(a["inicio"]) <= fecha(prev["fin"]) + timedelta(minutes=2)):
+            if (fecha(a["fin"]) or AHORA) > (fecha(prev["fin"]) or AHORA):
+                prev["fin"] = a["fin"]
+            prev["ahora"] = prev["ahora"] or a["ahora"]
+            continue
+        unicos.append(dict(a))
+    unicos.sort(key=lambda a: (-a["nivelNum"], a["inicio"] or ""))
     return unicos
 
 
