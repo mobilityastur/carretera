@@ -122,15 +122,20 @@ function vistaZonas() {
   const zs = estado.zonas;
   const puertos = zs.filter((z) => z.tipo === "puerto");
   const autovias = zs.filter((z) => z.tipo === "autovia");
+  const huerna = zs.filter((z) => z.tipo === "huerna");
   const avisosAhora = (estado.avisos || []);
+  const ver = (f) => filtro === "todas" || filtro === f;
   const filtroBtn = (id, txt) => `<button type="button" data-filtro="${id}" aria-pressed="${filtro === id}">${txt}</button>`;
   let html = cabecera("Asturias") + bloqueAvisos(avisosAhora) +
-    `<nav class="filtros" aria-label="Filtrar zonas">${filtroBtn("todas", "Todas")}${filtroBtn("puertos", "Puertos")}${filtroBtn("autovias", "Autovías")}</nav>`;
-  if (filtro !== "autovias") {
+    `<nav class="filtros" aria-label="Filtrar zonas">${filtroBtn("todas", "Todas")}${filtroBtn("puertos", "Puertos")}${filtroBtn("autovias", "Autovías")}${huerna.length ? filtroBtn("huerna", "Huerna") : ""}</nav>`;
+  if (ver("huerna") && huerna.length) {
+    html += `<section class="seccion"><h2>Huerna</h2>${huerna.map(tarjetaZona).join("")}</section>`;
+  }
+  if (ver("puertos")) {
     const orden = [...puertos].sort((a, b) => b.nivel - a.nivel);
     html += `<section class="seccion"><h2>Puertos</h2>${orden.map(tarjetaZona).join("")}</section>`;
   }
-  if (filtro !== "puertos") {
+  if (ver("autovias")) {
     html += `<section class="seccion"><h2>Autovías</h2><div class="rejilla">${autovias.map((z) => `
       <a class="autovia n${z.nivel}" href="#/zona/${esc(z.id)}"><strong>${esc(z.nombre)}</strong>
       <span class="etq">${esc(z.nivel ? z.resumen : etiquetaNivel(z))}</span></a>`).join("")}</div></section>`;
@@ -241,7 +246,7 @@ function vistaMapa() {
   const color = (n) => ["#3FBF7F", "#F2B33D", "#F0605A"][n] || "#3FBF7F";
   for (const z of estado.zonas) {
     const [la, lo] = z.centro;
-    L.circleMarker([la, lo], { radius: z.tipo === "puerto" ? 11 : 9, color: "#14171B", weight: 3, fillColor: color(z.nivel), fillOpacity: 1 })
+    L.circleMarker([la, lo], { radius: z.tipo === "autovia" ? 9 : 11, color: "#14171B", weight: 3, fillColor: color(z.nivel), fillOpacity: 1 })
       .addTo(mapa).bindPopup(`<strong>${esc(z.nombre)}</strong><br>${esc(z.estado)}<br><a href="#/zona/${esc(z.id)}">Ver detalle</a>`);
     for (const i of z.incidencias) {
       if (i.lat == null || i.nivel === 0) continue;

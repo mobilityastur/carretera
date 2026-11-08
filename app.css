@@ -53,8 +53,10 @@ h1.medio { font-size: 38px; line-height: 1.05; }
 .aviso.previsto { opacity: .9; border-style: dashed; }
 
 /* filtros */
-.filtros { padding: 10px 20px 4px; display: flex; gap: 8px; flex-wrap: wrap; }
-.filtros button { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 1px solid #3A4048; background: transparent; font-weight: 500; font-size: 15px; cursor: pointer; }
+.filtros { padding: 10px 20px 4px; display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.filtros::-webkit-scrollbar { display: none; }
+.filtros button { flex: none; }
+.filtros button { min-height: 44px; padding: 0 15px; border-radius: 999px; border: 1px solid #3A4048; background: transparent; font-weight: 500; font-size: 15px; cursor: pointer; }
 .filtros button[aria-pressed="true"] { background: var(--ambar); border-color: var(--ambar); color: #1A1406; font-weight: 600; }
 
 /* secciones */
