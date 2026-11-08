@@ -37,28 +37,36 @@
     },
     {
       "id": "huerna",
-      "nombre": "Huerna",
-      "titulo": "Huerna (AP-66 y A-66)",
+      "nombre": "Gijón ↔ León",
+      "titulo": "Gijón ↔ León (A-66 y Huerna)",
       "tipo": "puerto",
       "carreteras": [
-        "AP-66",
-        "A-66"
+        "A-66",
+        "AP-66"
       ],
-      "tramo": "Campomanes ↔ La Magdalena ↔ León",
+      "tramo": "Gijón ↔ Oviedo ↔ Campomanes ↔ Huerna ↔ León",
       "bbox": [
         42.55,
         -5.96,
-        43.12,
+        43.56,
         -5.5
       ],
       "puntos": [
         [
-          42.97,
+          43.4,
           -5.85
+        ],
+        [
+          43.2,
+          -5.8
         ],
         [
           43.06,
           -5.82
+        ],
+        [
+          42.97,
+          -5.85
         ],
         [
           42.82,
@@ -73,16 +81,16 @@
         "633305",
         "672401"
       ],
-      "maxCamaras": 12,
+      "maxCamaras": 14,
       "foco": {
-        "nombre": "lado leonés",
+        "nombre": "Huerna y lado leonés",
         "bbox": [
           42.55,
-          -5.92,
-          42.98,
+          -5.96,
+          43.08,
           -5.5
         ],
-        "camaras": 6
+        "camaras": 9
       }
     },
     {
@@ -348,32 +356,6 @@
         ],
         "camaras": 6
       }
-    },
-    {
-      "id": "a66",
-      "nombre": "A-66",
-      "titulo": "A-66 (Gijón ↔ Campomanes)",
-      "tipo": "autovia",
-      "carreteras": [
-        "A-66"
-      ],
-      "tramo": "Gijón ↔ Oviedo ↔ Campomanes",
-      "bbox": [
-        43.08,
-        -5.95,
-        43.56,
-        -5.62
-      ],
-      "puntos": [
-        [
-          43.4,
-          -5.85
-        ],
-        [
-          43.2,
-          -5.8
-        ]
-      ]
     },
     {
       "id": "a63",
