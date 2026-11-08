@@ -95,12 +95,12 @@ function cabecera(titulo, extra = "") {
   </header>`;
 }
 
-function bloqueAvisos(avisos, max = 2) {
+function bloqueAvisos(avisos, max = 2, conDetalle = false) {
   return avisos.slice(0, max).map((a) => `
     <section class="aviso ${esc(a.nivel)} ${a.ahora ? "" : "previsto"}">
       ${ICO.triangulo}
-      <div><strong>${a.ahora ? "" : "Previsto: "}Aviso ${esc(a.nivel)} · ${esc(a.fenomeno || a.titulo)}</strong>
-      <span>${esc(avisoTexto(a))}</span></div>
+      <div><strong>${a.ahora ? "" : "Previsto: "}Aviso ${esc(a.nivel)} por ${esc((a.fenomeno || a.titulo || "").toLowerCase())}</strong>
+      <span>${esc(avisoTexto(a))}${conDetalle && a.texto ? " " + esc(a.texto) : ""}</span></div>
     </section>`).join("");
 }
 
@@ -165,7 +165,7 @@ function vistaZona(id) {
   html = html.replace('<span class="hora">', `<span class="hora">${esc(z.carreteras.join(" · "))} · ${esc(z.tramo || "")}<br>`);
   html += `<section class="estado-grande n${z.nivel}"><span class="rotulo">Estado ahora</span>
     <strong>${esc(z.estado)}</strong><span>${esc(textoEstado)}</span></section>`;
-  if (z.avisos.length) html += `<div style="height:12px"></div>` + bloqueAvisos(z.avisos.map((a) => ({ ...a, zonas: [] })), 3);
+  if (z.avisos.length) html += `<div style="height:12px"></div>` + bloqueAvisos(z.avisos.map((a) => ({ ...a, zonas: [] })), 3, true);
   html += `<section class="seccion"><div class="cab"><h2>Cámaras</h2><small>DGT</small></div>${camaras(z.camaras)}</section>`;
   html += `<section class="seccion"><h2>Incidencias DGT</h2><div class="lista">${z.incidencias.length
     ? z.incidencias.map(itemInc).join("") : '<p class="nada">Sin incidencias en este tramo.</p>'}</div></section>`;
@@ -200,7 +200,7 @@ function vistaAvisos() {
   const av = estado.avisos || [];
   const sinClave = /AEMET_API_KEY/.test(estado.fuentes?.avisos?.error || "");
   html += `<section class="seccion" style="padding-left:0;padding-right:0"><h2 style="padding:0 20px">AEMET</h2>${av.length
-    ? bloqueAvisos(av, 20)
+    ? bloqueAvisos(av, 20, true)
     : `<p class="nada" style="margin:0 20px">${sinClave ? "Avisos de AEMET pendientes de configurar." : "AEMET no tiene avisos en vigor ni previstos para estas zonas."}</p>`}</section>`;
   const prog = estado.zonas.flatMap((z) => z.programadas.map((i) => ({ ...i, zona: z.nombre })));
   html += `<section class="seccion"><h2>Cortes y obras programados</h2><div class="lista">${prog.length

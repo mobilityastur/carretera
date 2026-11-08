@@ -386,6 +386,11 @@ def leer_cap(xml_bytes):
             continue
         inicio = fecha(texto(info, "onset")) or fecha(texto(info, "effective"))
         fenomeno = params.get("AEMET-Meteoalerta fenomeno", "")
+        fenomeno = fenomeno.split(";", 1)[-1] if fenomeno else ""
+        if not fenomeno:
+            m = re.search(r"[Aa]viso (?:especial )?de (.+?) de nivel", texto(info, "event") or "")
+            fenomeno = m.group(1) if m else (texto(info, "event") or "")
+        fenomeno = fenomeno[:1].upper() + fenomeno[1:]
         for area in hijos(info, "area"):
             poli = []
             for par in (texto(area, "polygon") or "").split():
@@ -401,7 +406,7 @@ def leer_cap(xml_bytes):
                 "zonaNombre": texto(area, "areaDesc"),
                 "nivel": nivel,
                 "nivelNum": NIVELES_AEMET[nivel],
-                "fenomeno": fenomeno.split(";", 1)[-1] if fenomeno else (texto(info, "event") or ""),
+                "fenomeno": fenomeno,
                 "titulo": texto(info, "event"),
                 "texto": texto(info, "description"),
                 "probabilidad": params.get("AEMET-Meteoalerta probabilidad"),
@@ -486,7 +491,9 @@ def resumen_zona(zona, incs, cams, avisos):
                 "lat": c["lat"], "lon": c["lon"]}
                for c in sel if c["url"]]
 
-    av = [a for a in avisos if any(en_poligono(la, lo, a["poligono"]) for la, lo in zona["puntos"])]
+    codigos = set(zona.get("aemet", []))
+    av = [a for a in avisos if a["zona"] in codigos
+          or any(en_poligono(la, lo, a["poligono"]) for la, lo in zona["puntos"])]
     av_salida = [{k: v for k, v in a.items() if k != "poligono"} for a in av]
 
     nivel = max([i["nivel"] for i in activas], default=0)
