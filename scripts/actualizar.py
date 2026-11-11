@@ -45,6 +45,8 @@ def descargar(url, cabeceras=None, intentos=3, espera=5):
         except Exception as e:  # noqa: BLE001
             ultimo = e
             print(f"  aviso: {url} intento {i + 1}: {e}", file=sys.stderr)
+            if isinstance(e, urllib.error.HTTPError) and e.code == 429:
+                break  # límite de peticiones: reintentar solo lo empeora
             time.sleep(espera * (i + 1))
     raise RuntimeError(f"no se pudo descargar {url}: {ultimo}")
 
@@ -624,7 +626,16 @@ def main():
     fuente("incidencias", lambda: leer_incidencias(descargar(URL_INCIDENCIAS, {"Accept": "application/xml"})))
     fuente("camaras", lambda: leer_camaras(descargar(URL_CAMARAS, {"Accept": "application/xml"})))
     clave = os.environ.get("AEMET_API_KEY", "").strip()
-    if clave:
+    prev_av = fuentes_previas.get("avisos", {})
+    hora_av = fecha(prev_av.get("hora"))
+    if clave and prev_av.get("ok") and cache_previa.get("avisos") is not None and hora_av \
+            and AHORA - hora_av < timedelta(minutes=25):
+        # AEMET renueva los avisos pocas veces al día y la clave se comparte con la app de costa:
+        # se piden como mucho cada 25-30 minutos para no pasar su límite de peticiones
+        fuentes["avisos"] = prev_av
+        cache["avisos"] = cache_previa["avisos"]
+        print(f"avisos: reutilizados de {prev_av.get('hora')}")
+    elif clave:
         fuente("avisos", lambda: leer_avisos(clave))
     else:
         fuentes["avisos"] = {"ok": False, "hora": None, "error": "Falta el secreto AEMET_API_KEY", "n": 0}

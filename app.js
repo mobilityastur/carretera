@@ -88,7 +88,9 @@ async function cargar() {
 // ---------- vistas ----------
 function cabecera(titulo, extra = "") {
   const viejo = !estado.actualizado || Date.now() - new Date(estado.actualizado) > 40 * 60000;
-  const fallos = Object.entries(estado.fuentes || {}).filter(([k, f]) => !f.ok && !(k === "avisos" && /AEMET_API_KEY/.test(f.error || "")));
+  // una descarga fallida puntual no se avisa: la app sigue con los últimos datos buenos si tienen menos de 45 min
+  const fallos = Object.entries(estado.fuentes || {}).filter(([k, f]) => !f.ok && !(k === "avisos" && /AEMET_API_KEY/.test(f.error || ""))
+    && (!f.hora || Date.now() - new Date(f.hora) > 45 * 60000));
   const chip = viejo ? '<span class="chip-estado mal">Datos antiguos</span>'
     : fallos.length ? `<span class="chip-estado mal">Sin datos de ${fallos.map(([k]) => k === "camaras" ? "cámaras" : k).join(", ")}</span>` : "";
   return `<header class="cabecera">
