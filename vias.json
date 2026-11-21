@@ -1,0 +1,283 @@
+{
+ "A-54": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "objectOnTheRoad",
+   "obstruction"
+  ]
+ },
+ "A-6": {
+  "incidencias": 5,
+  "camaras": 37,
+  "tipos": [
+   "carriagewayClosures",
+   "laneClosures",
+   "roadMaintenance",
+   "roadworks",
+   "useOfSpecifiedLanesOrCarriagewaysAllowed",
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ },
+ "A-64": {
+  "incidencias": 0,
+  "camaras": 1,
+  "tipos": []
+ },
+ "A-66": {
+  "incidencias": 0,
+  "camaras": 24,
+  "tipos": []
+ },
+ "A-67": {
+  "incidencias": 25,
+  "camaras": 12,
+  "tipos": [
+   "carriagewayClosures",
+   "doNotUseSpecifiedLanesOrCarriageways",
+   "laneClosures",
+   "roadMaintenance",
+   "roadworks",
+   "speedRestrictionInOperation",
+   "useOfSpecifiedLanesOrCarriagewaysAllowed",
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ },
+ "A-8": {
+  "incidencias": 4,
+  "camaras": 56,
+  "tipos": [
+   "badWeather",
+   "laneClosures",
+   "poorEnvironment",
+   "roadMaintenance",
+   "roadworks",
+   "speedRestrictionInOperation",
+   "strongWinds"
+  ]
+ },
+ "AG-64": {
+  "incidencias": 2,
+  "camaras": 1,
+  "tipos": [
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ },
+ "AI-81": {
+  "incidencias": 0,
+  "camaras": 2,
+  "tipos": []
+ },
+ "AP-66": {
+  "incidencias": 0,
+  "camaras": 53,
+  "tipos": []
+ },
+ "AS-114": {
+  "incidencias": 0,
+  "camaras": 1,
+  "tipos": []
+ },
+ "AS-12": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "environmentalObstruction",
+   "rockfalls",
+   "singleAlternateLineTraffic"
+  ]
+ },
+ "AS-15": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "environmentalObstruction",
+   "rockfalls",
+   "slowTraffic"
+  ]
+ },
+ "AS-227": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "environmentalObstruction",
+   "rockfalls",
+   "slowTraffic"
+  ]
+ },
+ "AS-262": {
+  "incidencias": 0,
+  "camaras": 3,
+  "tipos": []
+ },
+ "AS-373": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ },
+ "CO-4": {
+  "incidencias": 0,
+  "camaras": 3,
+  "tipos": []
+ },
+ "CÑ-6": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ },
+ "GJ-81": {
+  "incidencias": 0,
+  "camaras": 1,
+  "tipos": []
+ },
+ "LE-5238": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "roadClosed",
+   "roadMaintenance",
+   "roadworks"
+  ]
+ },
+ "LU-P-1611": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "damagedRoadSurface",
+   "infrastructureDamageObstruction"
+  ]
+ },
+ "LU-P-1801": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "carriagewayClosures",
+   "roadMaintenance",
+   "roadworks"
+  ]
+ },
+ "LU-P-2006": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ },
+ "LU-P-4806": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "objectOnTheRoad",
+   "obstruction"
+  ]
+ },
+ "MO-5": {
+  "incidencias": 2,
+  "camaras": 0,
+  "tipos": [
+   "carriagewayClosures",
+   "roadMaintenance",
+   "roadworks"
+  ]
+ },
+ "N-120": {
+  "incidencias": 0,
+  "camaras": 2,
+  "tipos": []
+ },
+ "N-540": {
+  "incidencias": 6,
+  "camaras": 0,
+  "tipos": [
+   "intermittentShortTermClosures",
+   "roadMaintenance",
+   "roadworks",
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ },
+ "N-6": {
+  "incidencias": 1,
+  "camaras": 5,
+  "tipos": [
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ },
+ "N-611": {
+  "incidencias": 2,
+  "camaras": 0,
+  "tipos": [
+   "carriagewayClosures",
+   "roadMaintenance",
+   "roadworks"
+  ]
+ },
+ "N-621": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "environmentalObstruction",
+   "narrowLanes",
+   "rockfalls"
+  ]
+ },
+ "N-630": {
+  "incidencias": 1,
+  "camaras": 2,
+  "tipos": [
+   "roadMaintenance",
+   "roadworks",
+   "singleAlternateLineTraffic"
+  ]
+ },
+ "N-632": {
+  "incidencias": 3,
+  "camaras": 3,
+  "tipos": [
+   "carriagewayClosures",
+   "laneClosures",
+   "roadMaintenance",
+   "roadworks"
+  ]
+ },
+ "N-634": {
+  "incidencias": 2,
+  "camaras": 5,
+  "tipos": [
+   "environmentalObstruction",
+   "laneClosures",
+   "rockfalls",
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ },
+ "N-642": {
+  "incidencias": 3,
+  "camaras": 0,
+  "tipos": [
+   "laneClosures",
+   "narrowLanes",
+   "roadMaintenance",
+   "roadworks"
+  ]
+ },
+ "O-11": {
+  "incidencias": 1,
+  "camaras": 0,
+  "tipos": [
+   "vehicleObstruction",
+   "vehicleStuck"
+  ]
+ }
+}
